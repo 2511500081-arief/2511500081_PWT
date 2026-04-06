@@ -26,7 +26,7 @@ if(isset($_POST['login'])){
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login Modern</title>
+    <title>Login</title>
     <style>
         :root {
             --card: #ffffff;
