@@ -2074,7 +2074,7 @@ exports.QU = 3; // Ambiguous quotation
 
 exports.GL = 4; // Glue
 
-exports.NS = 5; // Non-starters
+exports.NS = 5; // Non-indexs
 
 exports.EX = 6; // Exclamation/Interrogation
 
@@ -2135,7 +2135,7 @@ exports.AI = 33; // Ambiguous (Alphabetic or Ideograph)
 
 exports.BK = 34; // Break (mandatory)
 
-exports.CJ = 35; // Conditional Japanese Starter
+exports.CJ = 35; // Conditional Japanese index
 
 exports.CR = 36; // Carriage return
 

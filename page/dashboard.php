@@ -1,1 +1,0 @@
-<p>Selamat datang di sistem CRUD Guru</p>

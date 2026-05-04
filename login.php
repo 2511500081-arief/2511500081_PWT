@@ -2,15 +2,15 @@
 session_start();
 include "config/koneksi.php";
 
-if(isset($_POST['login'])){
+if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $query = mysqli_query($conn, "SELECT * FROM users WHERE username='$username'");
+    $query = mysqli_query($conn, "SELECT * FROM admin WHERE username='$username' AND password='$password'");
     $data = mysqli_fetch_assoc($query);
 
-    if($data){
-        if($password == $data['password']){
+    if ($data) {
+        if ($password == $data['password']) {
             $_SESSION['username'] = $username;
             header("Location: index.php");
             exit;
@@ -25,6 +25,7 @@ if(isset($_POST['login'])){
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Login</title>
     <style>
@@ -58,7 +59,7 @@ if(isset($_POST['login'])){
             padding: 30px;
             width: 320px;
             border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
             text-align: center;
             animation: fadeIn 0.8s ease;
             position: absolute;
@@ -68,8 +69,15 @@ if(isset($_POST['login'])){
         }
 
         @keyframes fadeIn {
-            from {opacity: 0; transform: translate(-50%, -40%);}
-            to {opacity: 1; transform: translate(-50%, -50%);}
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
         }
 
         .logo {
@@ -79,9 +87,17 @@ if(isset($_POST['login'])){
         }
 
         @keyframes float {
-            0% {transform: translateY(0);}
-            50% {transform: translateY(-8px);}
-            100% {transform: translateY(0);}
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
         }
 
         h2 {
@@ -151,101 +167,108 @@ if(isset($_POST['login'])){
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
+
 <body>
 
-<!-- PARTICLES -->
-<div id="particles-js"></div>
+    <!-- PARTICLES -->
+    <div id="particles-js"></div>
 
-<div class="login-box">
+    <div class="login-box">
 
-    <!-- LOGO -->
-    <img src="AR_designR.png" class="logo" alt="Logo">
+        <!-- LOGO -->
+        <img src="AR_designR.png" class="logo" alt="Logo">
 
-    <h2>Login</h2>
+        <h2>Login</h2>
 
-    <?php if(isset($error)) { ?>
-        <div class="error"><?php echo $error; ?></div>
-    <?php } ?>
+        <?php if (isset($error)) { ?>
+            <div class="error"><?php echo $error; ?></div>
+        <?php } ?>
 
-    <form method="POST" onsubmit="playSound(); showLoading();">
-        
-        <input type="text" name="username" placeholder="Username" required>
+        <form method="POST" onsubmit="playSound(); showLoading();">
 
-        <div class="password-box">
-            <input type="password" id="password" name="password" placeholder="Password" required>
-            <span class="toggle-pass" onclick="togglePassword()">👁️</span>
+            <input type="text" name="username" placeholder="Username" required>
+
+            <div class="password-box">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <span class="toggle-pass" onclick="togglePassword()">👁️</span>
+            </div>
+
+            <button type="submit" name="login">Login</button>
+
+            <!-- LOADING -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+            </div>
+
+        </form>
+
+        <!-- DARK MODE -->
+        <div class="toggle" onclick="toggleDarkMode()">
+            🌙 Dark Mode
         </div>
 
-        <button type="submit" name="login">Login</button>
-
-        <!-- LOADING -->
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-        </div>
-
-    </form>
-
-    <!-- DARK MODE -->
-    <div class="toggle" onclick="toggleDarkMode()">
-        🌙 Dark Mode
     </div>
 
-</div>
+    <!-- SOUND -->
+    <script>
+        function playSound() {
+            var sound = new Audio("click.mp3");
+            sound.play();
+        }
+    </script>
 
-<!-- SOUND -->
-<script>
-function playSound() {
-    var sound = new Audio("click.mp3");
-    sound.play();
-}
-</script>
+    <!-- PARTICLES JS -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
 
-<!-- PARTICLES JS -->
-<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+    <script>
+        // PARTICLES CONFIG
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80 },
+                "size": { "value": 3 },
+                "move": { "speed": 2 },
+                "line_linked": { "enable": true },
+                "color": { "value": "#00f2fe" }
+            },
+            "interactivity": {
+                "events": {
+                    "onhover": { "enable": true, "mode": "repulse" }
+                }
+            }
+        });
 
-<script>
-// PARTICLES CONFIG
-particlesJS("particles-js", {
-  "particles": {
-    "number": { "value": 80 },
-    "size": { "value": 3 },
-    "move": { "speed": 2 },
-    "line_linked": { "enable": true },
-    "color": { "value": "#00f2fe" }
-  },
-  "interactivity": {
-    "events": {
-      "onhover": { "enable": true, "mode": "repulse" }
-    }
-  }
-});
+        // DARK MODE
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark");
+        }
 
-// DARK MODE
-function toggleDarkMode() {
-    document.body.classList.toggle("dark");
-}
+        // SHOW / HIDE PASSWORD
+        function togglePassword() {
+            var pass = document.getElementById("password");
+            pass.type = (pass.type === "password") ? "text" : "password";
+        }
 
-// SHOW / HIDE PASSWORD
-function togglePassword() {
-    var pass = document.getElementById("password");
-    pass.type = (pass.type === "password") ? "text" : "password";
-}
+        // SOUND
+        function playSound() {
+            document.getElementById("clickSound").play();
+        }
 
-// SOUND
-function playSound() {
-    document.getElementById("clickSound").play();
-}
-
-// LOADING
-function showLoading() {
-    document.getElementById("loading").style.display = "block";
-}
-</script>
+        // LOADING
+        function showLoading() {
+            document.getElementById("loading").style.display = "block";
+        }
+    </script>
 
 </body>
+
 </html>

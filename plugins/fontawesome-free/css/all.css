@@ -2403,10 +2403,10 @@ readers do not read off random characters that represent icons */
 .fa-khanda:before {
   content: "\f66d"; }
 
-.fa-kickstarter:before {
+.fa-kickindex:before {
   content: "\f3bb"; }
 
-.fa-kickstarter-k:before {
+.fa-kickindex-k:before {
   content: "\f3bc"; }
 
 .fa-kiss:before {
