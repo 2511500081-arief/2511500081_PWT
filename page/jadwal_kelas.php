@@ -1,84 +1,96 @@
 <?php
-require_once __DIR__ . "/../config/koneksi.php";
-?>
+include "config/koneksi.php";
+require_once "config/auth.php";
+cek_login();
 
-<div class="content-header">
-  <div class="container-fluid">
-    <h1>Data kelas</h1>
-  </div>
-</div>
+// ================= PROTEKSI HAPUS =================
+if (isset($_GET['action']) && $_GET['action'] == "hapus") {
 
-<?php
-if (isset($_GET['action'])) {
-    if ($_GET['action'] == "hapus") {
-        $kd = $_GET['kd'];
+  if (!is_admin()) {
+    echo "Akses ditolak!";
+    exit;
+  }
 
-        $query = mysqli_query($conn, "DELETE FROM jadwal_kelas WHERE id_jadwal = '$kd'");
+  $kd = $_GET['kd'];
 
-        if ($query) {
-            echo '<div class="alert alert-warning">Berhasil Dihapus</div>';
-            echo '<meta http-equiv="refresh" content="1;url=index.php?page=jadwal_kelas">';
-        }
-    }
+  // FIX: pakai id_jadwal, bukan nis
+  $query = mysqli_query($conn, "DELETE FROM jadwal_kelas WHERE id_jadwal='$kd'");
+
+  if ($query) {
+    echo "<div class='alert alert-warning'>Berhasil Di Hapus</div>";
+    echo '<meta http-equiv="refresh" content="1;url=index.php?page=jadwal_kelas">';
+  }
 }
 ?>
 
 <div class="content">
-<div class="container-fluid">
-<div class="card">
-<div class="card-body">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
 
-<a href="index.php?page=tambah_jadwal" class="btn btn-primary btn-sm">
-  Tambah jadwal
-</a>
+        <!-- TOMBOL TAMBAH HANYA ADMIN -->
+        <?php if (is_admin()) { ?>
+          <a href="index.php?page=tambah_jadwal" class="btn btn-primary btn-sm">
+            Tambah Jadwal
+          </a>
+        <?php } ?>
 
-<br><br>
+        <br><br>
 
-<table class="table table-striped">
-<thead>
-<tr>
-  <th>no</th>
-  <th>id jadwal</th>
-  <th>id kelas</th>
-  <th>tahun ajaran</th>
-  <th>semester</th>
-  <th>aksi</th>
-</tr>
-</thead>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <td>No</td>
+              <td>ID Jadwal</td>
+              <td>ID Kelas</td>
+              <td>Tahun Ajaran</td>
+              <td>Semester</td>
 
-<tbody>
-<?php
-$no = 0;
-$query = mysqli_query($conn, "SELECT * FROM jadwal_kelas");
+              <!-- KOLOM AKSI HANYA ADMIN -->
+              <?php if (is_admin()) { ?>
+                <td>Aksi</td>
+              <?php } ?>
+            </tr>
+          </thead>
 
-while ($result = mysqli_fetch_array($query)) {
-    $no++;
-?>
-<tr>
-  <td><?= $no; ?></td>
-  <td><?= $result['id_jadwal']; ?></td>
-  <td><?= $result['id_kelas']; ?></td>
-  <td><?= $result['thn_ajaran']; ?></td>
-  <td><?= $result['semester']; ?></td>
-  <td>
+          <tbody>
+            <?php
+            $no = 0;
+            $query = mysqli_query($conn, "SELECT * FROM jadwal_kelas");
 
-    <a href="index.php?page=jadwal_kelas&action=hapus&kd=<?= $result['id_jadwal']; ?>"
-       onclick="return confirm('Yakin ingin hapus?')">
-      <span class="badge badge-danger">Hapus</span>
-    </a>
+            while ($result = mysqli_fetch_array($query)) {
+              $no++;
+              ?>
+              <tr>
+                <td><?= $no; ?></td>
+                <td><?= $result['id_jadwal']; ?></td>
+                <td><?= $result['id_kelas']; ?></td>
+                <td><?= $result['thn_ajaran']; ?></td>
+                <td><?= $result['semester']; ?></td>
 
-    <a href="index.php?page=edit_jadwal&kd=<?= $result['id_jadwal']; ?>">
-      <span class="badge badge-warning">Edit</span>
-    </a>
+                <!-- AKSI HANYA ADMIN -->
+                <?php if (is_admin()) { ?>
+                  <td>
 
-  </td>
-</tr>
-<?php } ?>
-</tbody>
+                    <a href="index.php?page=jadwal_kelas&action=hapus&kd=<?= $result['id_jadwal']; ?>"
+                      onclick="return confirm('Yakin ingin hapus?')">
+                      <span class="badge badge-danger">Hapus</span>
+                    </a>
 
-</table>
+                    <a href="index.php?page=edit_jadwal&kd=<?= $result['id_jadwal']; ?>">
+                      <span class="badge badge-warning">Edit</span>
+                    </a>
 
-</div>
-</div>
-</div>
+                  </td>
+                <?php } ?>
+
+              </tr>
+            <?php } ?>
+          </tbody>
+
+        </table>
+
+      </div>
+    </div>
+  </div>
 </div>

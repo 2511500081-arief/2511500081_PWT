@@ -3,105 +3,95 @@ include "config/koneksi.php";
 
 $jml_siswa = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM siswa"))['total'];
 $jml_kelas = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM kelas"))['total'];
-
-$hari = date("l");
-$hariIndo = [
-    "Monday"=>"Senin","Tuesday"=>"Selasa","Wednesday"=>"Rabu",
-    "Thursday"=>"Kamis","Friday"=>"Jumat","Saturday"=>"Sabtu","Sunday"=>"Minggu"
-];
-$hariSekarang = $hariIndo[$hari];
-
-$jam = date("H:i:s");
-
-$queryJadwal = mysqli_query($conn, "
-SELECT 
-    dk.*,
-    k.nm_kelas,
-    m.nm_mapel,
-    g.nm_guru
-FROM detail_jadwal dk
-JOIN jadwal_kelas jk ON dk.id_jadwal = jk.id_jadwal
-JOIN kelas k ON jk.id_kelas = k.id_kelas
-JOIN mapel m ON dk.kd_mapel = m.kd_mapel
-JOIN guru g ON dk.kd_guru = g.kd_guru
-WHERE dk.hari='$hariSekarang'
-AND '$jam' BETWEEN dk.jam_mulai AND dk.jam_selesai
-");
 ?>
 
-<div class="row">
+<style>
+.card-modern {
+    border-radius: 16px;
+    transition: 0.3s;
+    background: white;
+}
+.card-modern:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
 
-<div class="col-lg-3 col-6">
-<div class="small-box bg-info">
-<div class="inner">
-<h3><?= $jml_siswa; ?></h3>
-<p>Jumlah Siswa</p>
-</div>
-<div class="icon">
-<i class="fas fa-users"></i>
-</div>
-</div>
-</div>
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
 
-<div class="col-lg-3 col-6">
-<div class="small-box bg-success">
-<div class="inner">
-<h3><?= $jml_kelas; ?></h3>
-<p>Jumlah Kelas</p>
-</div>
-<div class="icon">
-<i class="fas fa-school"></i>
-</div>
-</div>
-</div>
+.bg-blue { background: linear-gradient(135deg,#3b82f6,#6366f1); }
+.bg-green { background: linear-gradient(135deg,#22c55e,#16a34a); }
+.bg-orange { background: linear-gradient(135deg,#f59e0b,#f97316); }
 
-<div class="col-lg-6">
-<div class="card">
-<div class="card-header">
-<h3 class="card-title">Jadwal Sedang Berlangsung</h3>
-</div>
-<div class="card-body">
-<table class="table table-bordered">
-<tr>
-<th>Kelas</th>
-<th>Mapel</th>
-<th>Guru</th>
-<th>Jam</th>
-</tr>
-
-<?php if(mysqli_num_rows($queryJadwal) > 0){ ?>
-<?php while($row = mysqli_fetch_assoc($queryJadwal)){ ?>
-<tr>
-<td><?= $row['nm_kelas']; ?></td>
-<td><?= $row['nm_mapel']; ?></td>
-<td><?= $row['nm_guru']; ?></td>
-<td><?= $row['jam_mulai']; ?> - <?= $row['jam_selesai']; ?></td>
-</tr>
-<?php } ?>
-<?php } else { ?>
-<tr>
-<td colspan="4" class="text-center">Tidak ada jadwal sekarang</td>
-</tr>
-<?php } ?>
-
-</table>
-</div>
-</div>
-</div>
-
-</div>
+/* BACKGROUND SECTION */
+.section-gradient {
+    background: linear-gradient(135deg,#6366f1,#3b82f6);
+    color:white;
+    border-radius:16px;
+}
+</style>
 
 <div class="row">
-<div class="col-lg-12">
-<div class="card">
-<div class="card-header">
-<h3 class="card-title">Profile User</h3>
+
+    <div class="col-md-6 col-lg-4 mb-3">
+        <div class="card card-modern shadow-sm border-0">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <small class="text-muted">Total Siswa</small>
+                    <h2><?= $jml_siswa ?></h2>
+                </div>
+                <div class="icon-circle bg-blue text-white">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4 mb-3">
+        <div class="card card-modern shadow-sm border-0">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <small class="text-muted">Total Kelas</small>
+                    <h2><?= $jml_kelas ?></h2>
+                </div>
+                <div class="icon-circle bg-green text-white">
+                    <i class="fas fa-school"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
-<div class="card-body">
-<p><b>Username:</b> <?= $_SESSION['username']; ?></p>
-<p><b>Status:</b> Admin</p>
-<p><b>Login Time:</b> <?= date("d-m-Y H:i:s"); ?></p>
+
+<!-- WELCOME -->
+<div class="card section-gradient shadow-sm mt-3">
+    <div class="card-body">
+        <h4>👋 Selamat Datang, <?= $_SESSION['username'] ?></h4>
+        <p>Semoga harimu menyenangkan 🚀</p>
+    </div>
 </div>
-</div>
-</div>
+
+<!-- PROFILE -->
+<div class="card card-modern shadow-sm mt-3 text-center">
+    <div class="card-body">
+
+        <div class="icon-circle bg-orange text-white mx-auto mb-3" style="width:70px;height:70px;">
+            <b><?= strtoupper(substr($_SESSION['username'], 0, 1)); ?></b>
+        </div>
+
+        <h5><?= $_SESSION['username'] ?></h5>
+        <small class="text-muted"><?= $_SESSION['role'] ?></small>
+
+        <hr>
+
+        <small>Login: <?= date("d M Y H:i") ?></small>
+        <small>Copyright © 2026 Arief Budikurniawan. All rights reserved.</small>
+
+    </div>
 </div>

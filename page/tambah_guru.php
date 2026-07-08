@@ -1,4 +1,10 @@
 <?php
+
+require_once "config/auth.php";
+hanya_admin();
+?>
+
+<?php
 include __DIR__ . "/../config/koneksi.php";
 
 if (!isset($conn)) {
@@ -24,19 +30,19 @@ if (isset($_POST['tambah'])) {
     $id_user = $_POST['id_user'];
     $nm_guru = $_POST['nm_guru'];
     $jenkel = $_POST['jenkel'];
-    $pend = $_POST['pend_trkhir'];
-    $hp = $_POST['no_hp'];
+    $pend = $_POST['pend_terakhir'];
+    $hp = $_POST['hp'];
     $alamat = $_POST['alamat'];
 
-    
+
     if (empty($nm_guru) || empty($jenkel)) {
         echo '<div class="alert alert-danger">Data tidak boleh kosong!</div>';
         return;
     }
 
-    
+
     $insert = mysqli_query($conn, "INSERT INTO guru 
-    (kd_guru, id_user, nm_guru, jenkel, pend_trkhir, no_hp, alamat) 
+    (kd_guru, id_user, nm_guru, jenkel, pend_terakhir, hp, alamat) 
     VALUES 
     ('$kd_guru','$id_user','$nm_guru','$jenkel','$pend','$hp','$alamat')");
 
@@ -50,58 +56,58 @@ if (isset($_POST['tambah'])) {
 ?>
 
 <section class="content">
-<div class="container-fluid">
-<div class="card">
-<div class="card-body">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
 
-<form method="POST">
+                <form method="POST">
 
-<div class="form-group">
-<label>Kode Guru</label>
-<input type="text" value="<?= $hasilkode ?>" class="form-control" readonly>
-</div>
+                    <div class="form-group">
+                        <label>Kode Guru</label>
+                        <input type="text" value="<?= $hasilkode ?>" class="form-control" readonly>
+                    </div>
 
-<div class="form-group">
-<label>ID User</label>
-<input type="number" name="id_user" class="form-control">
-</div>
+                    <div class="form-group">
+                        <label>ID User</label>
+                        <input type="number" name="id_user" class="form-control">
+                    </div>
 
-<div class="form-group">
-<label>Nama Guru</label>
-<input type="text" name="nm_guru" class="form-control">
-</div>
+                    <div class="form-group">
+                        <label>Nama Guru</label>
+                        <input type="text" name="nm_guru" class="form-control">
+                    </div>
 
-<div class="form-group">
-<label>Jenis Kelamin</label>
-<select name="jenkel" class="form-control">
-    <option value="">-- Pilih --</option>
-    <option value="Laki-laki">Laki-laki</option>
-    <option value="Perempuan">Perempuan</option>
-</select>
-</div>
+                    <div class="form-group">
+                        <label>Jenis Kelamin</label>
+                        <select name="jenkel" class="form-control">
+                            <option value="">-- Pilih --</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                    </div>
 
-<div class="form-group">
-<label>Pendidikan Terakhir</label>
-<input type="text" name="pend_trkhir" class="form-control">
-</div>
+                    <div class="form-group">
+                        <label>Pendidikan Terakhir</label>
+                        <input type="text" name="pend_terakhir" class="form-control">
+                    </div>
 
-<div class="form-group">
-<label>HP</label>
-<input type="text" name="no_hp" class="form-control">
-</div>
+                    <div class="form-group">
+                        <label>HP</label>
+                        <input type="text" name="hp" class="form-control">
+                    </div>
 
-<div class="form-group">
-<label>Alamat</label>
-<textarea name="alamat" class="form-control"></textarea>
-</div>
+                    <div class="form-group">
+                        <label>Alamat</label>
+                        <textarea name="alamat" class="form-control"></textarea>
+                    </div>
 
-<br>
-<button type="submit" name="tambah" class="btn btn-primary">Simpan</button>
+                    <br>
+                    <button type="submit" name="tambah" class="btn btn-primary">Simpan</button>
 
-</form>
+                </form>
 
-</div>
-</div>
-</div>
-</div>
+            </div>
+        </div>
+    </div>
+    </div>
 </section>

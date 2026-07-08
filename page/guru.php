@@ -10,10 +10,19 @@
 
 <?php
 include "config/koneksi.php";
+require_once "config/auth.php";
+cek_login();
 
+// PROTEKSI HAPUS
 if (isset($_GET['action']) && $_GET['action'] == "hapus") {
+
+    if (!is_admin()) {
+        echo "Akses ditolak!";
+        exit;
+    }
+
     $kd = $_GET['kd'];
-    $query = mysqli_query($conn, "DELETE FROM guru WHERE Kd_guru='$kd'");
+    $query = mysqli_query($conn, "DELETE FROM guru WHERE kd_guru='$kd'");
 
     if ($query) {
         echo "<div class='alert alert-warning'>Berhasil Di Hapus</div>";
@@ -27,11 +36,13 @@ if (isset($_GET['action']) && $_GET['action'] == "hapus") {
         <div class="card">
             <div class="card-body">
 
-                <a href="index.php?page=tambah_guru" class="btn btn-primary btn-sm mb-3">
-                    Tambah Guru
-                </a>
+                <?php if (is_admin()) { ?>
+                    <a href="index.php?page=tambah_guru" class="btn btn-primary btn-sm mb-3">
+                        Tambah Guru
+                    </a>
+                <?php } ?>
 
-                <table class="table table-striped">
+                <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>NO</th>
@@ -42,7 +53,9 @@ if (isset($_GET['action']) && $_GET['action'] == "hapus") {
                             <th>Pendidikan Terakhir</th>
                             <th>No HP</th>
                             <th>Alamat</th>
-                            <th>Aksi</th>
+                            <?php if (is_admin()) { ?>
+                                <th>Aksi</th>
+                            <?php } ?>
                         </tr>
                     </thead>
 
@@ -53,25 +66,29 @@ if (isset($_GET['action']) && $_GET['action'] == "hapus") {
                         while ($result = mysqli_fetch_array($query)) {
                             $no++;
                             ?>
-                        <tr>
-                            <td><?= $no; ?></td>
-                            <td><?= $result['kd_guru']; ?></td>
-                            <td><?= $result['id_user']; ?></td>
-                            <td><?= $result['nm_guru']; ?></td>
-                            <td><?= $result['jenkel']; ?></td>
-                            <td><?= $result['pend_terakhir']; ?></td>
-                            <td><?= $result['hp']; ?></td>
-                            <td><?= $result['alamat']; ?></td>
-                            <td>
-                                <a href="index.php?page=guru&action=hapus&kd=<?= $result['kd_guru'] ?>">
-                                    <span class="badge badge-danger">Hapus</span>
-                                </a>
+                            <tr>
+                                <td><?= $no; ?></td>
+                                <td><?= $result['kd_guru']; ?></td>
+                                <td><?= $result['id_user']; ?></td>
+                                <td><?= $result['nm_guru']; ?></td>
+                                <td><?= $result['jenkel']; ?></td>
+                                <td><?= $result['pend_terakhir']; ?></td>
+                                <td><?= $result['hp']; ?></td>
+                                <td><?= $result['alamat']; ?></td>
 
-                                <a href="index.php?page=edit_guru&kd=<?= $result['kd_guru'] ?>">
-                                    <span class="badge badge-warning">Edit</span>
-                                </a>
-                            </td>
-                        </tr>
+                                <?php if (is_admin()) { ?>
+                                    <td>
+                                        <a href="index.php?page=guru&action=hapus&kd=<?= $result['kd_guru'] ?>"
+                                            onclick="return confirm('Yakin ingin hapus?')">
+                                            <span class="badge badge-danger">Hapus</span>
+                                        </a>
+
+                                        <a href="index.php?page=edit_guru&kd=<?= $result['kd_guru'] ?>">
+                                            <span class="badge badge-warning">Edit</span>
+                                        </a>
+                                    </td>
+                                <?php } ?>
+                            </tr>
                         <?php } ?>
                     </tbody>
 

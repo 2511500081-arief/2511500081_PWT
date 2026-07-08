@@ -1,24 +1,42 @@
 <?php
+ini_set('session.cookie_lifetime', 0);
 session_start();
 include "config/koneksi.php";
 
 if (isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
 
-    $query = mysqli_query($conn, "SELECT * FROM admin WHERE username='$username' AND password='$password'");
-    $data = mysqli_fetch_assoc($query);
+    // VALIDASI KOSONG
+    if ($username == "" || $password == "") {
+        $error = "Username dan Password wajib diisi!";
+    } else {
 
-    if ($data) {
-        if ($password == $data['password']) {
-            $_SESSION['username'] = $username;
+        // ================= LOGIN SISWA =================
+        $querySiswa = mysqli_query($conn, "SELECT * FROM siswa WHERE nis='$username' AND password='$password'");
+        $dataSiswa = mysqli_fetch_assoc($querySiswa);
+
+        if ($dataSiswa) {
+            $_SESSION['username'] = $dataSiswa['nm_siswa'];
+            $_SESSION['role'] = 'siswa';
+            $_SESSION['nis'] = $dataSiswa['nis'];
+            $_SESSION['id_kelas'] = $dataSiswa['id_kelas'];
+
             header("Location: index.php");
             exit;
-        } else {
-            $error = "Password salah!";
         }
-    } else {
-        $error = "Username tidak ditemukan!";
+
+        // ================= LOGIN ADMIN =================
+        $query = mysqli_query($conn, "SELECT * FROM admin WHERE username='$username' AND password='$password'");
+        $data = mysqli_fetch_assoc($query);
+
+        if ($data) {
+            $_SESSION['username'] = $username;
+            $_SESSION['role'] = 'admin';
+            header("Location: index.php");
+            exit;
+        }
+        $error = "Username / Password salah!";
     }
 }
 ?>

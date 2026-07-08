@@ -1,3 +1,9 @@
+<?php
+
+require_once "config/auth.php";
+hanya_admin();
+?>
+
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -11,13 +17,13 @@
 <?php
 include "config/koneksi.php";
 $kd = $_GET['kd'];
-$edit = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM Kelas WHERE Id_kelas='$kd'"));
+$edit = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM Kelas WHERE id_kelas='$kd'"));
 
-if(isset($_POST['tambah'])){
-    $Id_kelas = $_POST['Id_kelas'];
-    $Nm_kelas = $_POST['Nm_kelas'];
+if (isset($_POST['tambah'])) {
+    $Id_kelas = $_POST['id_kelas'];
+    $Nm_kelas = $_POST['nm_kelas'];
 
-    $insert = mysqli_query($conn, "UPDATE Kelas SET Nm_kelas='$Nm_kelas' WHERE Id_kelas='$Id_kelas'");
+    $insert = mysqli_query($conn, "UPDATE Kelas SET nm_kelas='$Nm_kelas' WHERE id_kelas='$Id_kelas'");
 
     if ($insert) {
         echo '<div class="alert alert-info-dismissible">
@@ -39,27 +45,28 @@ if(isset($_POST['tambah'])){
         <div class="card">
             <div class="card-body">
                 <div class="card-body p-2">
-                <form method="POST" action="">
-                    <div class="form-group">
-                        <label for="Id_kelas">Kode Kelas</label>
-                        <input type="text" name="Id_kelas" value="<?= $edit['Id_kelas']; ?>" class="form-control" readonly>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="Nm_kelas">Nama Kelas</label>
-                        <input type="text" name="Nm_kelas" value="<?= $edit['Nm_kelas']; ?>" id="Nm_kelas" placeholder="Nama kelas" class="form-control">
-                    </div>
-                    
-                    <div class="card-footer">
-                        <input type="submit" class="btn btn-primary" name="tambah" value="simpan">
-                        <a href="index.php?page=kelas" class="btn btn-secondary">
-                            Batal
-                        </a>
-                    </div>
-                </form>
+                    <form method="POST" action="">
+                        <div class="form-group">
+                            <label for="id_kelas">Kode Kelas</label>
+                            <input type="text" name="id_kelas" value="<?= $edit['id_kelas']; ?>" class="form-control"
+                                readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nm_kelas">Nama Kelas</label>
+                            <input type="text" name="nm_kelas" value="<?= $edit['nm_kelas']; ?>" id="nm_kelas"
+                                placeholder="Nama kelas" class="form-control">
+                        </div>
+
+                        <div class="card-footer">
+                            <input type="submit" class="btn btn-primary" name="tambah" value="Update">
+                            <a href="index.php?page=kelas" class="btn btn-secondary">
+                                Batal
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    </div>
 </section>
-                    

@@ -1,3 +1,9 @@
+<?php
+
+require_once "config/auth.php";
+hanya_admin();
+?>
+
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -10,7 +16,7 @@
 <?php
 include "config/koneksi.php";
 //kode otomatis
-$carikode = mysqli_query($conn,"select max(kd_mapel) from mapel") or die (mysqli_error($conn));
+$carikode = mysqli_query($conn, "select max(kd_mapel) from mapel") or die(mysqli_error($conn));
 $datakode = mysqli_fetch_array($carikode);
 if ($datakode[0] != NULL) {
     $nilaikode = substr($datakode[0], 2);
@@ -22,13 +28,13 @@ if ($datakode[0] != NULL) {
 }
 $_SESSION["KODE"] = $hasilkode;
 
-if(isset($_POST['tambah'])){
+if (isset($_POST['tambah'])) {
     $kd_mapel = $_POST['kd_mapel'];
     $nm_mapel = $_POST['nm_mapel'];
     $kkm = $_POST['kkm'];
 
     $insert = mysqli_query($conn, "INSERT INTO mapel values ('$kd_mapel','$nm_mapel','$kkm')");
-    
+
     if ($insert) {
         echo '<div class="alert alert-info-dismissible">
         <button type="button" class="close" data-dismiss="alert"
@@ -53,12 +59,14 @@ if(isset($_POST['tambah'])){
                     <form method="POST" action="">
                         <div class="form-group">
                             <label for="kd_mapel">Kode Mapel</label>
-                            <input type="text" name="kd_mapel" value="<?= $hasilkode; ?>" placeholder="Id Kat" class="form-control" readonly>
+                            <input type="text" name="kd_mapel" value="<?= $hasilkode; ?>" placeholder="Id Kat"
+                                class="form-control" readonly>
                         </div>
 
                         <div class="form-group">
                             <label for="nm_mapel">Nama Mapel</label>
-                            <input type="text" name="nm_mapel" id="nm_mapel" placeholder="Nama Mapel" class="form-control">
+                            <input type="text" name="nm_mapel" id="nm_mapel" placeholder="Nama Mapel"
+                                class="form-control">
                         </div>
 
                         <div class="form-group">

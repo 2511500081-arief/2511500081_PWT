@@ -1,3 +1,9 @@
+<?php
+
+require_once "config/auth.php";
+hanya_admin();
+?>
+
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -13,7 +19,7 @@ include "config/koneksi.php";
 $kd = $_GET['kd'];
 $edit = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM mapel WHERE kd_mapel='$kd'"));
 
-if(isset($_POST['tambah'])){
+if (isset($_POST['tambah'])) {
     $kd_mapel = $_POST['kd_mapel'];
     $nm_mapel = $_POST['nm_mapel'];
     $kkm = $_POST['kkm'];
@@ -40,32 +46,34 @@ if(isset($_POST['tambah'])){
         <div class="card">
             <div class="card-body">
                 <div class="card-body p-2">
-                <form method="POST" action="">
-                    <div class="form-group">
-                        <label for="kd_mapel">Kode Mapel</label>
-                        <input type="text" name="kd_mapel" value="<?= $edit['kd_mapel']; ?>" class="form-control" readonly>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="nm_mapel">Nama Mapel</label>
-                        <input type="text" name="nm_mapel" value="<?= $edit['nm_mapel']; ?>" id="nm_mapel" placeholder="Nama mapel" class="form-control">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="kkm">KKM</label>
-                        <input type="text" name="kkm" value="<?= $edit['kkm']; ?>" id="kkm" placeholder="KKM" class="form-control">
-                    </div>
-                    
-                    <div class="card-footer">
-                        <input type="submit" class="btn btn-primary" name="tambah" value="simpan">
-                        <a href="index.php?page=mapel" class="btn btn-secondary">
-                            Batal
-                        </a>
-                    </div>
-                </form>
+                    <form method="POST" action="">
+                        <div class="form-group">
+                            <label for="kd_mapel">Kode Mapel</label>
+                            <input type="text" name="kd_mapel" value="<?= $edit['kd_mapel']; ?>" class="form-control"
+                                readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nm_mapel">Nama Mapel</label>
+                            <input type="text" name="nm_mapel" value="<?= $edit['nm_mapel']; ?>" id="nm_mapel"
+                                placeholder="Nama mapel" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="kkm">KKM</label>
+                            <input type="text" name="kkm" value="<?= $edit['kkm']; ?>" id="kkm" placeholder="KKM"
+                                class="form-control">
+                        </div>
+
+                        <div class="card-footer">
+                            <input type="submit" class="btn btn-primary" name="tambah" value="Update">
+                            <a href="index.php?page=mapel" class="btn btn-secondary">
+                                Batal
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    </div>
 </section>
-                    
